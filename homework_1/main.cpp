@@ -1,28 +1,56 @@
+
+/***************************
+    first Qt homework
+    written 15/9/2018
+    Author  Joseph_Zhou
+ ***************************/
+
+
+
 #include <QCoreApplication>
 #include <QDebug>
 #include<cstdio>
 #include<climits>
+#include<windef.h>
+#include<QList>
 using namespace std;
 
-#define v 0x12345678
 #define  MAX(x, y)  ( ((x) > (y)) ? (x) : (y) )
 #define  MIN(x, y)  ( ((x) < (y)) ? (x) : (y) )
-#define LLO(xxx)  ((quint8) ((quint32)(xxx) & 255))
-#define HLO(xxx)  ((quint8) ((quint32)(xxx) >> 8))
-#define LHI(xxx)  ((quint8) ((quint32)(xxx) >> 16))
-#define HHI(xxx)  ((quint8) ((quint32)(xxx) >> 24))
+
+#define  QuadraWORD_LLO(xxx)  ((qint8) ((qint32)(xxx)     ))
+#define  QuadraWORD_HLO(xxx)  ((qint8) ((qint32)(xxx) >> 8))
+#define  QuadraWORD_LHI(xxx)  ((qint8) ((qint32)(xxx) >>16))
+#define  QuadraWORD_HHI(xxx)  ((qint8) ((qint32)(xxx) >>24))
+//#define  W_PTR( var )  ( (word *) ((void *) &(var)) )
+
+//typedef  unsigned long int  uint32;      /* Unsigned 32 bit value */
+//typedef  unsigned short     uint16;      /* Unsigned 16 bit value */
+//typedef  unsigned char      uint8;       /* Unsigned 8  bit value */
+
 int main(int argc,char *argv[])
-{   int new_v;
-    QList <quint8> values;
-    values.append(HHI(v));
-    values.append(LHI(v));
-    values.append(HLO(v));
-    values.append(LLO(v));
-    qDebug()<<values;
-    qDebug("最高和次高8位最大值：0x%x",MAX(values.at(0),values.at(1)));
-    qDebug("最低和次低8位最小值：0x%x",MIN(values.at(2),values.at(3)));
-    new_v=(values.at(2)<<24)+(values.at(0)<<16)+(values.at(3)<<8)+(values.at(1));
-    qDebug("合成新的32位无符号整形数位0x%x(%d)",new_v,new_v);
-    std::sort(values.begin(),values.end(),greater<quint8>());
-    qDebug("排序后(0x%x,0x%x,0x%x,0x%x),(%d,%d,%d,%d)",values.at(0),values.at(1),values.at(2),values.at(3),values.at(0),values.at(1),values.at(2),values.at(3));
+{
+    qint32 u=0x12345678;
+    qint8 hhi,lhi,hlo,llo;
+    llo=QuadraWORD_LLO(u);
+    hlo=QuadraWORD_HLO(u);
+    lhi=QuadraWORD_LHI(u);
+    hhi=QuadraWORD_HHI(u);
+    QList<quint8> values;
+    values.append({hhi,lhi,hlo,llo});
+
+    //for (int x : values )
+
+    //输出原始数和各字节数
+    qDebug().nospace()<<"原始值:"<<"0x"<<hex<<u<<"=="<<dec<<u<<'\n';
+    qDebug().nospace()<<"0x"<<hex<<hhi<<"=="<<dec<<hhi<<" 0x"<<hex<<lhi<<"=="<<dec<<lhi<<" 0x"<<hex<<hlo<<"=="<<dec<<hlo<<" 0x"<<hex<<llo<<"=="<<dec<<llo;
+
+//    qDebug().nospace()<<"0x"<<hex<<lhi<<"=="<<dec<<lhi;
+//    qDebug().nospace()<<"0x"<<hex<<hlo<<"=="<<dec<<hlo;
+//    qDebug().nospace()<<"0x"<<hex<<llo<<"=="<<dec<<llo;
+
+    qDebug().nospace()<<"最高和次高8位最大值:"<<"0x"<<hex<<MAX(hhi, lhi)<<'<'<<dec<<MAX(hhi, lhi)<<'>';
+    //qDebug()<<"0x"<<hex<<hhi<<lhi<<hlo<<llo;
+    //qDebug()<<W_PTR(values);
+    //qDebug()<<hex<<values[3];
 }

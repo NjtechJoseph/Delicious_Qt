@@ -71,3 +71,5 @@ x"<<hex<<hlo<<"=="<<dec<<hlo<<" 0x"<<hex<<llo<<"=="<<dec<<llo;
     //qDebug()<<W_PTR(values);
     //qDebug()<<hex<<values[3];
 }
+
+

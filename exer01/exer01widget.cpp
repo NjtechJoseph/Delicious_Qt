@@ -25,9 +25,17 @@ void exer01Widget::on_pushButton_clicked()
     }
     qDebug()<<v;
 
+    /*************************************************
+    上几行输出QVector，以下几行控制在widget中显示QVector
+    **************************************************
+    **************************************************
+    foreach用法解释
+    例子:foreach (varItem , Items)
+    foreach（variable ，container）其中，varItem(variable)是容器Items(container)中的一个项，相当于：variable=container.item ，遍历会从头遍历到尾。
+     **************************************************/
     QString s="";
-    foreach (float f, v) {
+    foreach (float f, v) {                             //
        s += QString("%1 ").arg(f);
     }
-    ui->textEdit->insertPlainText(QString("%1%2").arg(s,"\n"));
+    ui->textEdit->insertPlainText(QString("%1%2").arg(s,"\n"));     //显示
 }

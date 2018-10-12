@@ -32,5 +32,22 @@ private slots:
 private:
     Ui::exer01_sort_Widget *ui;
 };
+//class student
+//{
+//public:
+//    student(QString &number,QString &name,QString &lesson1,QString &lesson2)
+//    {
+//        this->name=name;
+//        this->number=number;
+//        this->lesson1=lesson1;
+//        this->lesson2=lesson2;
+
+//    }
+//private:
+//    QString number;
+//    QString name;
+//    QString lesson1;
+//    QString lesson2;
+//};
 
 #endif // EXER01_SORT_WIDGET_H

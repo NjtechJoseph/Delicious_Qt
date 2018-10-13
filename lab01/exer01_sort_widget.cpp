@@ -16,17 +16,17 @@ exer01_sort_Widget::~exer01_sort_Widget()
 }
 
 
-bool name_mark(student m,student n)
+bool name_mark(student m,student n)         //对学生类中的name进行排序，生成bool值，待sort()函数使用
 {
     return (m.name)>(n.name);
 }
 
-bool lesson1_mark(student m,student n)
+bool lesson1_mark(student m,student n)      //对学生类中的lesson1进行排序，生成bool值，待sort()函数使用
 {
     return (m.lesson1)>(n.lesson1);
 }
 
-bool lesson2_mark(student m,student n)
+bool lesson2_mark(student m,student n)      //对学生类中的lesson2进行排序，生成bool值，待sort()函数使用
 {
     return (m.lesson2)>(n.lesson2);
 }
@@ -35,7 +35,7 @@ bool lesson2_mark(student m,student n)
 
 
 
-void exer01_sort_Widget::on_pushButton_clicked()
+void exer01_sort_Widget::on_pushButton_clicked()    //按下“按姓名排序”按键后，按学生类中的name进行排序，并输出
 {
     lu.number="1403130209";
     lu.name="鲁智深";
@@ -68,7 +68,7 @@ void exer01_sort_Widget::on_pushButton_clicked()
         for(int i=0;i<=3;i++)
             for(int j=0;j<=3;j++)
             {
-                ui->tableWidget->setItem(i,j,new QTableWidgetItem(QString("")));
+                ui->tableWidget->setItem(i,j,new QTableWidgetItem(QString("")));            //每次先将表格清空，以待放置字符
             }
 
                 ui->tableWidget->setItem(0,0,new QTableWidgetItem(table0.at(0).number));
@@ -91,7 +91,7 @@ void exer01_sort_Widget::on_pushButton_clicked()
 
 }
 
-void exer01_sort_Widget::on_pushButton_2_clicked()
+void exer01_sort_Widget::on_pushButton_2_clicked()                      //按下“按lesson1排序”按键后，按学生类中的lesson1进行排序，并输出
 {
     lu.number="1403130209";
     lu.name="鲁智深";
@@ -124,7 +124,7 @@ void exer01_sort_Widget::on_pushButton_2_clicked()
         for(int i=0;i<=3;i++)
             for(int j=0;j<=3;j++)
             {
-                ui->tableWidget->setItem(i,j,new QTableWidgetItem(QString("")));
+                ui->tableWidget->setItem(i,j,new QTableWidgetItem(QString("")));        //每次先将表格清空，以待放置字符
             }
         ui->tableWidget->setItem(0,0,new QTableWidgetItem(table0.at(0).number));
         ui->tableWidget->setItem(0,1,new QTableWidgetItem(table0.at(0).name));
@@ -144,7 +144,7 @@ void exer01_sort_Widget::on_pushButton_2_clicked()
         ui->tableWidget->setItem(3,3,new QTableWidgetItem(table0.at(3).lesson2));
 }
 
-void exer01_sort_Widget::on_pushButton_3_clicked()
+void exer01_sort_Widget::on_pushButton_3_clicked()                                      //按下“按lesson2排序”按键后，按学生类中的lesson2进行排序，并输出
 {
     lu.number="1403130209";
     lu.name="鲁智深";
@@ -178,7 +178,7 @@ void exer01_sort_Widget::on_pushButton_3_clicked()
         for(int i=0;i<=3;i++)
         for(int j=0;j<=3;j++)
         {
-            ui->tableWidget->setItem(i,j,new QTableWidgetItem(QString("")));
+            ui->tableWidget->setItem(i,j,new QTableWidgetItem(QString("")));            //每次先将表格清空，以待放置字符
         }
         ui->tableWidget->setItem(0,0,new QTableWidgetItem(table0.at(0).number));
         ui->tableWidget->setItem(0,1,new QTableWidgetItem(table0.at(0).name));

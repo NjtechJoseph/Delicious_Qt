@@ -35,6 +35,8 @@ private slots:
 private:
     Ui::exer01_sort_Widget *ui;
 };
+
+
 typedef class student
 {
 public:

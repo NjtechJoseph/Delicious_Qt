@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>                            排序程序</string>
+      <string>                          周家林的排序程序</string>
      </property>
     </widget>
    </item>

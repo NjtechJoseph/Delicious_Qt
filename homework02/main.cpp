@@ -40,17 +40,28 @@ enum SortKind{
 };
 }
 
-
+/******************************************** *
+ *          定义学生数据类结构体               *
+ * ****************************************** */
 typedef struct{
-    // 请补全结构定义
+    QString number;
+    QString name;
+    QVector<QString> lesson;
 } studData;
 
+
+ /******************************************** *
+  * 运算符重载函数，使其可以直接输出studData结构 *
+  * ****************************************** */
 QDebug operator<< (QDebug d, const studData &data) {
-    // 请补全运算符重载函数，使其可以直接输出studData结构
+    d<<"123"<<data.number<<data.name;
+    for(int i=0;i<data.lesson.size();i++)
+        d<<data.lesson.at(i);
     return d;
 }
 
-// 比较类，用于std::sort第三个参数
+
+ //比较类，用于std::sort第三个参数
 class myCmp {
 public:
     myCmp(int selectedColumn) { this->currentColumn = selectedColumn; }
@@ -65,10 +76,8 @@ bool myCmp::operator()(const studData &d1, const studData &d2)
     quint32 sortedColumn = 0x00000001<<currentColumn;
     switch (sortedColumn) {
     case SK::col01:
-    // ...
-    // 请补全运算符重载函数
-    // ...
-    //
+    result=(d1.lesson.at(currentColumn)>d2.lesson.at(currentColumn)>)
+
     }
     return result;
 
@@ -84,7 +93,7 @@ public:
     // ...
 }
 
-// 请补全
+ // 请补全
 ScoreSorter::ScoreSorter(QString dataFile){
 }
 
@@ -108,5 +117,11 @@ int main()
     ScoreSorter s(datafile);
     s.readFile();
     s.doSort();
+//    studData abc;
+//    abc.name="asdjbhjbh";
+//    abc.number="21234561";
+//    abc.lesson.append({"abhjbhjb","bshjkbhj","bhbh"});
+//    qDebug()<<abc;
+
     return 0;
 }

@@ -3,6 +3,8 @@
 #include <QTextStream>
 #include <QFile>
 
+using namespace std;
+
 namespace SK {
 enum SortKind{
     col01    =   0x00000001<<0,         //!< 第1列
@@ -76,11 +78,15 @@ bool myCmp::operator()(const studData &d1, const studData &d2)
     quint32 sortedColumn = 0x00000001<<currentColumn;
     switch (sortedColumn) {
     case SK::col01:
-    result=(d1.lesson.at(currentColumn)>d2.lesson.at(currentColumn)>)
-
+        result=(d1.number>d2.number);
+            break;
+    case SK::col02:
+        result=(d1.name>d2.name);
+            break;
+    default:result=(d1.lesson.at(currentColumn)>d2.lesson.at(currentColumn));    //比较qvector里的string
+        break;
     }
     return result;
-
 }
 
 
@@ -88,15 +94,34 @@ class ScoreSorter
 {
 public:
     ScoreSorter(QString dataFile);
-    // ...
-    // 请补全该类，使其实现上述要求
-    // ...
+    readFile();
+    doSort();
+private:
+    QString tempfile;
+
+};
+
+ScoreSorter::ScoreSorter(QString dataFile)
+{
+    tempfile=dataFile;
 }
 
- // 请补全
-ScoreSorter::ScoreSorter(QString dataFile){
+ScoreSorter::doSort()
+{
+    std::sort(,,myCmp::operator ())
 }
 
+ScoreSorter::readFile()
+{
+    QFile file(tempfile);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return -1;
+
+    while (!file.atEnd()) {
+        QByteArray line = file.readLine();
+        qDebug<<line;
+    }
+}
 
 void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
@@ -117,11 +142,7 @@ int main()
     ScoreSorter s(datafile);
     s.readFile();
     s.doSort();
-//    studData abc;
-//    abc.name="asdjbhjbh";
-//    abc.number="21234561";
-//    abc.lesson.append({"abhjbhjb","bshjkbhj","bhbh"});
-//    qDebug()<<abc;
+
 
     return 0;
 }

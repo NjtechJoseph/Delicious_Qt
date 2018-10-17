@@ -1,11 +1,12 @@
 #include <QDebug>
-#include <QVector>
 #include <QTextStream>
 #include <QFile>
+#include<QList>
+#include <QCoreApplication>
 
 using namespace std;
 
-#define N 4
+#define N 4     //选择想排序的列
 
 namespace SK {
 enum SortKind{
@@ -48,21 +49,25 @@ enum SortKind{
  *          定义学生数据类结构体               *
  * ****************************************** */
 typedef struct{
-    QList<QString> stu_info;
+     QStringList stu_info;
 } studData;
-
 
  /******************************************** *
   * 运算符重载函数，使其可以直接输出studData结构 *
   * ****************************************** */
 QDebug operator<< (QDebug d, const studData &data) {
     for(int i=0;i<data.stu_info.size();i++)
-        d<<data.stu_info.at(i);
+    {
+        d.noquote()<<data.stu_info.at(i);
+    }
+    qDebug()<<"";
     return d;
 }
 
 
- //比较类，用于std::sort第三个参数
+/* ********************************
+ * 比较类，用于std::sort第三个参数 *
+ * ********************************/
 class myCmp {
 public:
     myCmp(int selectedColumn) { this->currentColumn = selectedColumn; }
@@ -78,9 +83,7 @@ bool myCmp::operator()(const studData &d1, const studData &d2)
     bool result = false;
     quint32 sortedColumn = 0x00000001<<currentColumn;
     switch (sortedColumn) {
-    case SK::col01:
-        result=(d1.stu_info.at(currentColumn)>d2.stu_info.at(currentColumn));    //比较qvector里的string
-        break;
+    default: result=(d1.stu_info.at(currentColumn+1)>=d2.stu_info.at(currentColumn+1));break;
     }
     return result;
 }
@@ -94,9 +97,9 @@ public:
     void doSort();
 private:
     QString tempfile;
-    QByteArray line;
-    QVector<studData> student;
-
+    QList<studData>   student;
+//    QStringList    quantity;                            //抽出标题，否则无法排序
+    QStringList    quantity;
 };
 
 ScoreSorter::ScoreSorter(QString dataFile)
@@ -106,38 +109,44 @@ ScoreSorter::ScoreSorter(QString dataFile)
 
 void ScoreSorter::doSort()
 {
-    myCmp bigger(N);
-    std::sort(student.begin(),student.end(),bigger);
-    qDebug()<<"排序后输出，当前排序第 "<<N<<" 列：";
-    qDebug()<<student;
-    qDebug()<<"------------------------------------------------\n";
+    myCmp cmp_temp(N-2);
+    std::sort(student.begin(),student.end(),cmp_temp);
+    qDebug()<<"排序后输出，当前排序第 "<<N<<" 列："<<"\n";
+    quantity.removeLast();                              //删除最后一个"\n"
+    qDebug().nospace().noquote()<<quantity;
+    for(int i=0;i<student.size();i++)
+    {
+        qDebug()<<student.at(i);
+    }
 }
 
 void ScoreSorter::readFile()
 {
-    QFile file(tempfile);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-        qDebug()<<"文件打开失败\n";
-    while (!file.atEnd())
-    {
-        studData tempstu;
-        this->line = file.readLine();
-        QString string_data(line);
-        string_data.remove("\n");
-        tempstu.stu_info=string_data.split(" ",QString::SkipEmptyParts);
+    QFile mfile(tempfile);
+    if(!mfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            qDebug()<<"无法打开该文件!";
+       }
+    studData tempstu;
+    QString quant(mfile.readLine());
+        quantity= quant.split(" ", QString::SkipEmptyParts);
+    while(!mfile.atEnd()) {
+        QString str(mfile.readLine());
+        tempstu.stu_info = str.split(" ", QString::SkipEmptyParts);
+        if((tempstu.stu_info).last() == "\n") tempstu.stu_info.removeLast();
+        if(tempstu.stu_info.size()==0) continue;
         student.append(tempstu);
     }
-    file.close();
+    mfile.close();
 }
 
 //void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 //{
-//    // 自定义qDebug
+
 //}
 
 int main()
 {
-    QByteArray datafile = "data.txt";
+    QString datafile = "data.txt";
     QFile f("sorted_"+datafile);    // 如果排序后文件已存在，则删除之
     if (f.exists()){
         f.remove();
@@ -146,6 +155,5 @@ int main()
     ScoreSorter s(datafile);
     s.readFile();
     s.doSort();
-
     return 0;
 }

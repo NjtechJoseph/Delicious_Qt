@@ -1,8 +1,12 @@
 #include <QDebug>
 #include <QTextStream>
 #include <QFile>
-#include<QList>
-#include <QCoreApplication>
+#include <QList>
+#include <iostream>
+#include <cstdlib>
+#include <QString>
+#include <QMutex>
+
 
 using namespace std;
 
@@ -58,7 +62,7 @@ typedef struct{
 QDebug operator<< (QDebug d, const studData &data) {
     for(int i=0;i<data.stu_info.size();i++)
     {
-        d.noquote()<<data.stu_info.at(i);
+       d.noquote()<<qSetFieldWidth(3)<<data.stu_info.at(i);
     }
     qDebug()<<"";
     return d;
@@ -98,8 +102,7 @@ public:
 private:
     QString tempfile;
     QList<studData>   student;
-//    QStringList    quantity;                            //抽出标题，否则无法排序
-    QStringList    quantity;
+    QStringList quantity;                            //quatity为抽出的标题，否则无法排序
 };
 
 ScoreSorter::ScoreSorter(QString dataFile)
@@ -113,7 +116,7 @@ void ScoreSorter::doSort()
     std::sort(student.begin(),student.end(),cmp_temp);
     qDebug()<<"排序后输出，当前排序第 "<<N<<" 列："<<"\n";
     quantity.removeLast();                              //删除最后一个"\n"
-    qDebug().nospace().noquote()<<quantity;
+    qDebug().noquote()<<qSetFieldWidth(3)<<quantity;
     for(int i=0;i<student.size();i++)
     {
         qDebug()<<student.at(i);
@@ -128,7 +131,7 @@ void ScoreSorter::readFile()
        }
     studData tempstu;
     QString quant(mfile.readLine());
-        quantity= quant.split(" ", QString::SkipEmptyParts);
+    quantity= quant.split(" ", QString::SkipEmptyParts);
     while(!mfile.atEnd()) {
         QString str(mfile.readLine());
         tempstu.stu_info = str.split(" ", QString::SkipEmptyParts);
@@ -139,13 +142,53 @@ void ScoreSorter::readFile()
     mfile.close();
 }
 
-//void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
-//{
 
-//}
+
+//日志生成
+void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+ {
+     QMutex mutex;//日志代码互斥锁
+     mutex.lock();
+     cout << msg.toStdString() << endl;
+     QByteArray localMsg = msg.toLocal8Bit();
+     QString log;
+
+     switch (type) {
+     case QtDebugMsg:
+         log.append(QString(msg));
+         break;
+     case QtInfoMsg:
+         fprintf(stderr, "Info: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
+         break;
+     case QtWarningMsg:
+         fprintf(stderr, "Warning: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
+         break;
+     case QtCriticalMsg:
+         fprintf(stderr, "Critical: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
+         break;
+     case QtFatalMsg:
+         fprintf(stderr, "Fatal: %s (%s:%u, %s)\n", localMsg.constData(), context.file, context.line, context.function);
+         abort();
+     }
+
+     QFile file;
+     QString path = QString("sorted_data.txt");
+     file.setFileName(path);
+     if (!file.open(QIODevice::ReadWrite | QIODevice::Append))
+     {
+         QString erinfo = file.errorString();
+         cout << erinfo.toStdString()<< endl;
+         return;
+     }
+     QTextStream out(&file);
+     out << "\n\r" << log;
+     file.close();
+     mutex.unlock();
+}
 
 int main()
 {
+    qInstallMessageHandler(myMessageOutput);
     QString datafile = "data.txt";
     QFile f("sorted_"+datafile);    // 如果排序后文件已存在，则删除之
     if (f.exists()){
@@ -157,3 +200,5 @@ int main()
     s.doSort();
     return 0;
 }
+
+

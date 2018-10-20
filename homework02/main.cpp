@@ -91,7 +91,7 @@ bool myCmp::operator()(const studData &d1, const studData &d2)
     switch (sortedColumn) {
         case SK::col01: result=1;break;    //学号不做比较     第0列
         case SK::col02: result=1;break;    //姓名不做比较     第1列
-    default: result=(d1.stu_info.at(currentColumn-1)>=d2.stu_info.at(currentColumn-1));break;
+    default: result=(d1.stu_info.at(currentColumn-1)>=d2.stu_info.at(currentColumn-1));break;//其他列则使用同一种排序方法
     }
     return result;
 }
@@ -106,7 +106,7 @@ public:
     void doSort();
 private:
     QString tempfile;
-    QList<studData>   student;
+    QList<studData>   student;                      //student为待处理和输出的容器
     QStringList caption;                            //caption为抽出的标题，否则无法排序
 };
 
@@ -118,37 +118,34 @@ ScoreSorter::ScoreSorter(QString dataFile)
 void ScoreSorter::readFile()
 {
 
-    QStringList tempspace;
+    QStringList tempspace;                                      //存取一行数据的容器
     QFile mfile(tempfile);
     if(!mfile.open(QIODevice::ReadOnly | QIODevice::Text)) {
             qDebug()<<"无法打开该文件!";
        }
     QString title(mfile.readLine());
-    caption= title.split(" ", QString::SkipEmptyParts);
-
+    caption= title.split(" ", QString::SkipEmptyParts);         //读取标题
     while(!mfile.atEnd()) {
-        studData tempstu;
+        studData tempstu;                                       //存取一行数据，待student容器append
         QString str(mfile.readLine());
         tempspace = str.split(" ", QString::SkipEmptyParts);
         if(tempspace.last() == "\n") tempspace.removeLast();
         if(tempspace.size()==0) continue;
-        tempstu.stu_number = tempspace.at(0);
+        tempstu.stu_number = tempspace.at(0);                   //因为tempstu的一二个数据为学号和姓名，故先提取出来
         tempstu.stu_name =tempspace.at(1);
-        tempspace.removeAt(0);
+        tempspace.removeAt(0);                                  //提取后删除
         tempspace.removeAt(0);
     for(int i=0;i<tempspace.size();i++){
         tempstu.stu_info.append(tempspace.at(i).toInt());
 
         }
-    qreal level=0;
+    qreal level=0.0;                                            //求平均值
     for(int i=0;i<tempstu.stu_info.size();i++){
         level+=tempstu.stu_info.at(i);
         }
     level=level/tempstu.stu_info.size();
     tempstu.stu_info.append(level);
         student.append(tempstu);
-
-
     }
 
     mfile.close();

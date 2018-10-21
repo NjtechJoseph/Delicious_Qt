@@ -170,23 +170,34 @@ void ScoreSorter::doSort()
 
 
 
-void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+//void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+//{
+//    //注意编码问题
+//    QByteArray localMsg = msg.toUtf8();
+//    QString strMessage = QString(localMsg.constData());
+//    QFile file("sorted_data.txt");
+//    file.open(QIODevice::ReadWrite | QIODevice::Append);
+//    QTextStream stream(&file);
+//    stream.setCodec("UTF-8");
+//    stream << strMessage << "\r\n";
+//    qDebug().noquote()<<strMessage;
+//    file.close();
+//}
+
+void msgLogger(QtMsgType type,const QMessageLogContext &context,const QString &msg)
 {
-    //注意编码问题
-    QByteArray localMsg = msg.toUtf8();
-    QString strMessage = QString(localMsg.constData());
-    QFile file("sorted_data.txt");
-    file.open(QIODevice::ReadWrite | QIODevice::Append);
-    QTextStream stream(&file);
-    stream.setCodec("UTF-8");
-    stream << strMessage << "\r\n";
-    qDebug().noquote()<<strMessage;
-    file.close();
+    Q_UNUSED(type);
+    Q_UNUSED(context);
+    QFile outFile("sorted_data.txt");
+    outFile.open(QIODevice::WriteOnly | QIODevice::Append);
+    QTextStream ts(&outFile);
+    ts << msg << endl;
+    QTextStream(stdout) << msg << endl;
 }
 
 int main()
 {
-    qInstallMessageHandler(myMessageOutput);
+    qInstallMessageHandler(msgLogger);
     QString datafile = "data.txt";
     QFile f("sorted_"+datafile);    // 如果排序后文件已存在，则删除之
     if (f.exists()){

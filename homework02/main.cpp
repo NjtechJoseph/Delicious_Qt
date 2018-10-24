@@ -48,18 +48,24 @@ enum SortKind{
 };
 }
 
-/******************************************** *
- *          定义学生数据类结构体               *
- * ****************************************** */
+
+/*
+ * @brief 定义学生数据类结构体
+ * @param
+ *
+ */
 typedef struct{
     QString stu_number;
     QString stu_name;
     QList<int> stu_info;
 } studData;
 
- /******************************************** *
-  * 运算符重载函数，使其可以直接输出studData结构 *
-  * ****************************************** */
+
+/*
+ * @brief 运算符重载函数，使其可以直接输出studData结构
+ * @param
+ *
+ */
 QDebug operator<< (QDebug d, const studData &data) {                //stu_info 的长度为列的个数-2
     d.noquote()<<qSetFieldWidth(3)<<data.stu_number<<data.stu_name;
     for(int i=0;i<data.stu_info.size();i++)
@@ -71,9 +77,11 @@ QDebug operator<< (QDebug d, const studData &data) {                //stu_info �
 }
 
 
-/* ********************************
- * 比较类，用于std::sort第三个参数 *
- * ********************************/
+/*
+ * @brief 比较类，用于std::sort第三个参数
+ * @param
+ *
+ */
 class myCmp {
 public:
     myCmp(int selectedColumn) { this->currentColumn = selectedColumn; }

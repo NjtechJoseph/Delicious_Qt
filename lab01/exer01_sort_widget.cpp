@@ -2,7 +2,6 @@
 #include "ui_exer01_sort_widget.h"
 #include"qdebug.h"
 
-//student lu;
 exer01_sort_Widget::exer01_sort_Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::exer01_sort_Widget)

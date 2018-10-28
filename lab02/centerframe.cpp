@@ -266,6 +266,11 @@ void CenterFrame::createUserCommandArea()
      drawWidget->clear();
  }
 
+ void CenterFrame::showimg()
+ {
+     drawWidget->showpic();
+ }
+
 
  void CenterFrame::on_btnRectClicked()
  {

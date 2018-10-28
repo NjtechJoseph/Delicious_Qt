@@ -10,6 +10,7 @@
 #include <QLayout>
 
 
+
  MainWindow::MainWindow(QWidget *parent)
      : QMainWindow(parent)
  {
@@ -67,6 +68,12 @@
      colorBtn->setToolTip(tr("选择画笔颜色"));
      connect (colorBtn, &QToolButton::clicked, this, &MainWindow::penColorChangged);
 
+     //图片选择框
+     picBtn = new QToolButton;
+     picBtn->setText(tr("背景图"));
+     picBtn->setToolTip(tr("选择图片"));
+     connect(picBtn,&QToolButton::clicked,centerFrame,&CenterFrame::showimg);
+
 
      // 创建清除工具栏
      clearBtn = new QToolButton;
@@ -81,7 +88,7 @@
     toolBar->addWidget (widthLabel);
     toolBar->addWidget (widthSpinBox);
     toolBar->addWidget (colorBtn);
-//    toolBar->addWidget(picBtn);
+    toolBar->addWidget(picBtn);
     toolBar->addSeparator();
     toolBar->addWidget (clearBtn);
 }
@@ -107,3 +114,27 @@ void MainWindow::penColorChangged ()
         colorBtn->setIcon (QIcon(p));
     }
 }
+
+//void MainWindow::showpic()
+//{
+
+
+
+
+
+//}
+
+//图片按钮
+//btnImg =new QPushButton(group);
+//QPixmap imgmap(p.width(),p.height());//与按钮同大小
+//QPainter imgPaint(&imgmap);
+//QImage mimg=QImage(":/1.jpg");
+//imgmap.fill(BACKGROUND_COLOR);
+//    QRect target=imgmap.rect();
+//    QRect source=mimg.rect();
+//    imgPaint.drawImage(target,mimg,source);//在pixmap上进行绘制
+//imgmap.load(imagFile);
+//btnImg->setIcon(QIcon(imgmap));//将imgmap作为按钮
+//btnImg->setCheckable(true);
+//btnImg->setIconSize(p.size());
+//btnImg->setToolTip("绘制图片");

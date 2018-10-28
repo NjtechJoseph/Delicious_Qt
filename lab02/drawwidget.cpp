@@ -2,6 +2,7 @@
 #include <QMouseEvent>
 #include <QPen>
 #include <QMessageBox>
+#include <QFileDialog>
 
 
 DrawWidget::DrawWidget(QWidget *parent) : QWidget(parent)
@@ -11,17 +12,13 @@ DrawWidget::DrawWidget(QWidget *parent) : QWidget(parent)
     setAutoFillBackground (true);   //设置窗体背景色
     setPalette (QPalette(BACKGROUND_COLOR));
     pix = new QPixmap(size());      //此QPixmap对象用来准备随时接受绘制的内容
-    pix->fill (BACKGROUND_COLOR);          //填充背景色为白色
+    pix->fill (Qt::transparent);          //填充背景色为白色
     setMinimumSize (600, 400);      //设置绘制区窗体的最小尺寸
+//    picmap = new QPixmap(size());
+//    picmap->fill(Qt::transparent);
 
 }
-//QWidget *widget = new QWidget();
-//widget->setAutoFillBackground(true);
-//QPalette palette;
-//QPixmap pixmap(":/Resources/Penguins.jpg");
-//palette.setBrush(QPalette::Window, QBrush(pixmap));
-//widget->setPalette(palette);
-//widget->show();
+
 
 
 
@@ -29,6 +26,7 @@ DrawWidget::~DrawWidget()
 {
     // 注意：一定要删除pix指针
     delete pix;
+//    delete picmap;
 }
 
 void DrawWidget::setStyle (int s)
@@ -120,7 +118,17 @@ void DrawWidget::mousePressEvent (QMouseEvent *e)
  {
      // 清除绘图内容，简单的用背景色填充整个画布即可
      pix->fill(BACKGROUND_COLOR);
+//     picmap->fill(BACKGROUND_COLOR);
      update ();
+ }
+
+ void DrawWidget::showpic()
+ {
+     imagFile = QFileDialog::getOpenFileName(this, tr("Open File"),
+                                      "/home",
+                                      tr("Images (*.png *.xpm *.jpg)"));
+
+     pix->load(imagFile);
  }
 
  void DrawWidget::setShapeType(ST::ShapeType type)

@@ -23,6 +23,8 @@ class QToolButton;
 
      void penColorChangged();
 
+
+
  private:
      CenterFrame *centerFrame;      //用到了centerframe
      QLabel *styleLabel;
@@ -31,6 +33,6 @@ class QToolButton;
      QSpinBox *widthSpinBox;
      QToolButton *colorBtn;
      QToolButton *clearBtn;
-//     QToolButton *picBtn;
+     QToolButton *picBtn;
  };
  #endif // MAINWINDOW_H

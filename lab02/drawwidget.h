@@ -37,9 +37,11 @@
      void setWidth(int);
      void setColor(QColor);
      void clear();
+     void showpic();
 
  private :
      QPixmap *pix;
+     QPixmap *picmap;
      QPoint startpos;
      QPoint endpos;
      bool canDraw;
@@ -48,5 +50,6 @@
      QColor color;
      ST::ShapeType drawType;
      QString drawnText;
+     QString imagFile;
  };
  #endif // DRAWWIDGET_H

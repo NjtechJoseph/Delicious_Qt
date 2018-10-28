@@ -33,6 +33,6 @@ class QToolButton;
      QSpinBox *widthSpinBox;
      QToolButton *colorBtn;
      QToolButton *clearBtn;
-     QToolButton *picBtn;
+     QToolButton *picBtn;       //用来添加图片的button
  };
  #endif // MAINWINDOW_H

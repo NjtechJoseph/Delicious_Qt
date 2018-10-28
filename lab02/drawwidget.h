@@ -41,7 +41,7 @@
 
  private :
      QPixmap *pix;
-     QPixmap *picmap;
+     QPixmap *pic;
      QPoint startpos;
      QPoint endpos;
      bool canDraw;
@@ -50,6 +50,6 @@
      QColor color;
      ST::ShapeType drawType;
      QString drawnText;
-     QString imagFile;
+     QString imagFile=":/Minions.jpg";
  };
  #endif // DRAWWIDGET_H

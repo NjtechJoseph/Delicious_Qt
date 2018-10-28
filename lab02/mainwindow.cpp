@@ -115,26 +115,3 @@ void MainWindow::penColorChangged ()
     }
 }
 
-//void MainWindow::showpic()
-//{
-
-
-
-
-
-//}
-
-//图片按钮
-//btnImg =new QPushButton(group);
-//QPixmap imgmap(p.width(),p.height());//与按钮同大小
-//QPainter imgPaint(&imgmap);
-//QImage mimg=QImage(":/1.jpg");
-//imgmap.fill(BACKGROUND_COLOR);
-//    QRect target=imgmap.rect();
-//    QRect source=mimg.rect();
-//    imgPaint.drawImage(target,mimg,source);//在pixmap上进行绘制
-//imgmap.load(imagFile);
-//btnImg->setIcon(QIcon(imgmap));//将imgmap作为按钮
-//btnImg->setCheckable(true);
-//btnImg->setIconSize(p.size());
-//btnImg->setToolTip("绘制图片");

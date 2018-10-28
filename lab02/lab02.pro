@@ -34,3 +34,6 @@ HEADERS += \
     centerframe.h \
     common.h \
     mainwindow.h
+
+RESOURCES += \
+    res/resources.qrc

@@ -14,8 +14,9 @@ DrawWidget::DrawWidget(QWidget *parent) : QWidget(parent)
     pix = new QPixmap(size());      //此QPixmap对象用来准备随时接受绘制的内容
     pix->fill (Qt::transparent);          //填充背景色为白色
     setMinimumSize (600, 400);      //设置绘制区窗体的最小尺寸
-//    picmap = new QPixmap(size());
-//    picmap->fill(Qt::transparent);
+    pic = new QPixmap(size());
+    pic->fill(Qt::transparent);
+    pic->load(imagFile);
 
 }
 
@@ -26,7 +27,7 @@ DrawWidget::~DrawWidget()
 {
     // 注意：一定要删除pix指针
     delete pix;
-//    delete picmap;
+    delete pic;
 }
 
 void DrawWidget::setStyle (int s)
@@ -95,7 +96,12 @@ void DrawWidget::mousePressEvent (QMouseEvent *e)
  void DrawWidget::paintEvent (QPaintEvent *)
  {
      QPainter painter(this);
-     painter.drawPixmap (QPoint(0, 0), *pix);
+     QRect img_rect=QRect(0,0,this->width()/4,this->height()/4);
+     QImage pic1=pix->toImage();
+     QImage pic2=pic->toImage();
+     painter.drawImage(0,0,pic1);
+     painter.drawImage(img_rect,pic2);
+
  }
 
 
@@ -118,7 +124,7 @@ void DrawWidget::mousePressEvent (QMouseEvent *e)
  {
      // 清除绘图内容，简单的用背景色填充整个画布即可
      pix->fill(BACKGROUND_COLOR);
-//     picmap->fill(BACKGROUND_COLOR);
+     pic->fill(BACKGROUND_COLOR);
      update ();
  }
 
@@ -128,7 +134,7 @@ void DrawWidget::mousePressEvent (QMouseEvent *e)
                                       "/home",
                                       tr("Images (*.png *.xpm *.jpg)"));
 
-     pix->load(imagFile);
+     pic->load(imagFile);
  }
 
  void DrawWidget::setShapeType(ST::ShapeType type)

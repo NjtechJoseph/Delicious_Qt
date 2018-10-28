@@ -17,11 +17,7 @@ DrawWidget::DrawWidget(QWidget *parent) : QWidget(parent)
     pic = new QPixmap(size());
     pic->fill(Qt::transparent);
     pic->load(imagFile);
-
 }
-
-
-
 
 DrawWidget::~DrawWidget()
 {
@@ -132,7 +128,7 @@ void DrawWidget::mousePressEvent (QMouseEvent *e)
  {
      imagFile = QFileDialog::getOpenFileName(this, tr("Open File"),
                                       "/home",
-                                      tr("Images (*.png *.xpm *.jpg)"));
+                                      tr("Images (*.png *bmp *.jpg)"));
 
      pic->load(imagFile);
  }

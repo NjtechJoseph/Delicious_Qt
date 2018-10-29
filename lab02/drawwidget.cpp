@@ -128,7 +128,7 @@ void DrawWidget::mousePressEvent (QMouseEvent *e)
  {
      imagFile = QFileDialog::getOpenFileName(this, tr("Open File"),
                                       "/home",
-                                      tr("Images (*.png *bmp *.jpg)"));
+                                      tr("Images (*.png *.bmp *.jpg)"));
 
      pic->load(imagFile);
  }

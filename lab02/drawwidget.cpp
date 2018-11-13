@@ -92,12 +92,9 @@ void DrawWidget::mousePressEvent (QMouseEvent *e)
  void DrawWidget::paintEvent (QPaintEvent *)
  {
      QPainter painter(this);
-     QRect img_rect=QRect(0,0,this->width()/4,this->height()/4);
-     QImage pic1=pix->toImage();
-     QImage pic2=pic->toImage();
-     painter.drawImage(0,0,pic1);
-     painter.drawImage(img_rect,pic2);
-
+     painter.drawPixmap(this->width()/4,this->height()/4,this->width()/2,this->height()/2,*pic);
+     qDebug()<<"123";
+     painter.drawPixmap(0,0,*pix);
  }
 
 
@@ -107,6 +104,7 @@ void DrawWidget::mousePressEvent (QMouseEvent *e)
      {
          QPixmap *newPix = new QPixmap(size());
          newPix->fill (BACKGROUND_COLOR);
+         newPix->fill(Qt::transparent);
          QPainter p(newPix);
          p.drawPixmap (QPoint(0, 0), *pix);
          delete pix;     //一定要删除原来的对象，否则会出现内存泄漏

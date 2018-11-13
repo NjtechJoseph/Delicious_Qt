@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resource/Firefox.png</file>
+        <file>resource/firefox-gray.jpg</file>
+        <file>resource/logo_weather.gif</file>
+    </qresource>
+</RCC>

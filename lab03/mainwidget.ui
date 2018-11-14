@@ -136,17 +136,21 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label_3">
-       <property name="enabled">
-        <bool>true</bool>
+      <widget class="QPushButton" name="pushButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
-       <property name="font">
-        <font>
-         <pointsize>31</pointsize>
-        </font>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>43</height>
+        </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">image: url(:/resource/logo_weather.gif);</string>
+        <string notr="true">border-image: url(:/resource/logo_weather.gif);</string>
        </property>
        <property name="text">
         <string/>

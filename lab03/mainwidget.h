@@ -14,6 +14,12 @@ QT_CHARTS_USE_NAMESPACE
 class dataWorker;
 class QDateTime;
 
+
+
+
+
+
+
 class mainWidget : public QWidget
 {
     Q_OBJECT
@@ -39,8 +45,11 @@ private slots:
     void on_cbLegendItalic_clicked();
     void on_dataError(QString error);
 
+
     void on_tempBtn_clicked();
     void on_AQIBtn_clicked();
+
+    void on_pushButton_clicked();
 
 private:
     Ui::mainWidget *ui;

@@ -247,30 +247,8 @@ void mainWidget::on_btnStart_clicked()
     ui->comboMonth->setEnabled(false);
     ui->btnStart->setEnabled(false);
 
-//    // 设置城市
-//    char City=ui->ComboCity->currentText();
-//    switch (City) {
-//    case "北京":
-//        worker->setQueryCity("beijing");
-//        break;
-//    case "南京":
-//        worker->setQueryCity("nanjing");
-//        break;
-//    case "上海":
-//        worker->setQueryCity("shanghai");
-//        break;
-//    case "厦门":
-//        worker->setQueryCity("xiamen");
-//        break;
-//    case "海南":
-//        worker->setQueryCity("hainan");
-//        break;
-//    case "拉萨":
-//        worker->setQueryCity("lasa");
-//        break;
-//    default:
-//        break;
-//    }
+    // 设置城市
+
     if(ui->ComboCity->currentText()=="北京")       {
         worker->setQueryCity("beijing");
     }

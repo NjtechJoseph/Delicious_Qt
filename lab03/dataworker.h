@@ -7,6 +7,12 @@
 class QNetworkAccessManager;
 class QNetworkReply;
 
+enum queryType{
+    AQI,
+    Temperature
+};
+
+
 /**
  * @brief dataWorker类
  *
@@ -20,6 +26,10 @@ class dataWorker : public QObject
 public:
     explicit dataWorker(QObject *parent = 0);
     explicit dataWorker(QString date, QObject *parent = 0);
+    queryType getQueryType();
+    QString getQueryTypeInString();
+    void setQueryCity(QString newCity);
+    void setQueryType(queryType newType);
     void setRequestDate(QString newDate);
     QString requestDate();
     void doRequest();
@@ -39,6 +49,8 @@ protected slots:
 private:
     QNetworkAccessManager *manager;         //!< 网络访问管理类对象
     QString _requestDate;                   //!< 请求年月
+    enum queryType type;                    //!< 查询类型（AQI/温度）
+    QString city;                           //!< 城市
 
     QList<QDateTime> dataDate;              //!< 日期
     QList<qreal> dataHigh;                  //!< 最高温度

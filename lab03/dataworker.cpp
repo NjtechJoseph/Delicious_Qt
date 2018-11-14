@@ -30,6 +30,37 @@ dataWorker::dataWorker(QString date, QObject *parent) :
     initNetwork();
 }
 
+queryType dataWorker::getQueryType()
+{
+    return this->type;
+}
+
+QString dataWorker::getQueryTypeInString()
+{
+    switch (type) {
+    case AQI:
+        return QString("aqi");
+        break;
+    default:
+        return QString("temperature");
+        break;
+    }
+}
+/**
+ * @brief dataWorker::setQueryCity
+ * @param newCity
+ */
+void dataWorker::setQueryCity(QString newCity){
+    city = newCity;
+}
+
+void dataWorker::setQueryType(queryType newType)
+{
+    type = newType;
+    qDebug()<<type;
+}
+
+
 /**
  * @brief 设置请求年月的setter函数
  * @param newDate 新的年月
@@ -77,6 +108,7 @@ void dataWorker::doRequest()
         // 如果无数据文件，则从网络获取
         qDebug().noquote()<<QString("数据由网络获取...");
         httpGet(requestUrl());
+        qDebug().noquote()<<requestUrl();
     }
 }
 
@@ -88,10 +120,16 @@ void dataWorker::doRequest()
  */
 QString dataWorker::requestUrl()
 {    
-    QString r =
-            QString("https://lishi.tianqi.com/nanjing/%1.html").arg(_requestDate);
-    qDebug()<<r;
-    return r;
+    QString Url;
+    switch(type){
+    case Temperature:
+        Url = QString("http://lishi.tianqi.com/%1/%2.html").arg(city,_requestDate);
+        break;
+    case AQI:
+        Url = QString("http://www.tianqihoubao.com/aqi/%1-%2.html").arg(city,_requestDate);
+        break;
+    }
+    return Url;
 }
 
 /**
@@ -127,15 +165,24 @@ void dataWorker::parseHTML(const QString sourceText)
     while (!reader.atEnd()) {
         reader.readNext();
         if (reader.isStartElement()) {
-            if (reader.name() == "ul"){         // 查找Html标签：ul
-                strData<<reader.readElementText(QXmlStreamReader::IncludeChildElements).trimmed();
+            //qDebug()<<reader.name();
+            if (type==Temperature){
+                if (reader.name() == "ul"){         // 查找Html标签：ul
+                    strData<<reader.readElementText(QXmlStreamReader::IncludeChildElements).trimmed();
+                }
+            }else{
+                if (reader.name() == "tr"){         // 查找Html标签：ul
+                    strData<<reader.readElementText(QXmlStreamReader::IncludeChildElements).trimmed();
+                }
             }
         }
     }
     if (reader.hasError()) {
         qDebug()<< "  读取错误： " << reader.errorString();
+        parseData(QString());
     }else{
         if(!strData.isEmpty()){
+            qDebug()<<strData;
             parseData(strData.join(splitter));
             exportDataToFile(strData.join(splitter));
         }
@@ -153,6 +200,9 @@ void dataWorker::parseHTML(const QString sourceText)
  */
 void dataWorker::parseData(const QString sourceText)
 {
+    if(sourceText.isEmpty()){
+        emit dataParseFinished(QList<QDateTime>(),QList<qreal>(),QList<qreal>());
+    }
     QStringList dataList = sourceText.split(splitter);
 
     dataDate.clear();
@@ -164,8 +214,17 @@ void dataWorker::parseData(const QString sourceText)
         QStringList dataList = s.split(" ",QString::SkipEmptyParts);
         QDateTime momentInTime = QDateTime::fromString(dataList.at(0),"yyyy-MM-dd");
         dataDate.append(momentInTime);
-        dataHigh.append(dataList.at(1).toDouble());
-        dataLow.append(dataList.at(2).toDouble());
+        if(type==Temperature)
+        {
+            dataHigh.append(dataList.at(1).toDouble());
+            dataLow.append(dataList.at(2).toDouble());
+
+        }
+        else
+        {
+            dataHigh.append(dataList.at(2).toDouble());
+            dataLow.append(dataList.at(4).toDouble());
+        }
     }
     emit dataParseFinished(dataDate,dataHigh,dataLow);
 }
@@ -183,7 +242,7 @@ void dataWorker::exportDataToFile(const QString dataText)
     if( ! dir.exists(dataPath) )
         qDebug()<<dir.mkdir(dataPath);
 
-    QString fName = QString("%1/%2.txt").arg(dataPath,_requestDate);
+    QString fName = QString("%1/%2-%3-%4.txt").arg(dataPath,_requestDate,city,getQueryTypeInString());
 
     QFile f(fName);
     if(f.open(QIODevice::WriteOnly|QIODevice::Text)){

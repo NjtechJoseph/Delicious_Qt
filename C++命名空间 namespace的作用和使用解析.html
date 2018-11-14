@@ -1,0 +1,288 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="referrer" content="origin" />
+<title>C++命名空间 namespace的作用和使用解析 - 莫水千流 - 博客园</title>
+<meta property="og:description" content="一、 为什么需要命名空间（问题提出） 在 C语言中定义了3个层次的作用域，即文件(编译单元)、函数和复合语句。C++又引入了类作用域，类是出现在文件内的。在不同的作用域中可以定义相同名字的变量，互不于" />
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=giTNza-Of-PEt5UsELhFQAR7G6-bfaSa4oolcq7i9-o1"/>
+<link id="MainCss" type="text/css" rel="stylesheet" href="/skins/sea/bundle-sea.css?v=PPe3jt1rcXPno6kucw0iQU2MWF3DbrvubQHRM0FEMas1"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/sea/bundle-sea-mobile.css?v=TUq9b8RqI4cnYtP4OpVmWEjd-0geHVUfEk1cNxZl3IA1"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/zhoug2020/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/zhoug2020/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/zhoug2020/wlwmanifest.xml"/>
+<script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+<script type="text/javascript">var currentBlogApp = 'zhoug2020', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="/bundles/blog-common.js?v=fobKU6DuMF7uNOMKEOEwhhLiN2dvU4IL2UfTDgUZOsY1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+
+<!--done-->
+<div id="header">
+	
+<!--done-->
+<div class="header">
+	<div class="headerText">
+		<a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/zhoug2020/">莫水千流</a><br>
+		
+	</div>
+</div>
+
+</div>
+
+<div id="mytopmenu" >
+	
+		<div id="mylinks"><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a> &nbsp;
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/zhoug2020/">首页</a> &nbsp;
+<a id="blog_nav_newpost" class="menu" rel="nofollow" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a> &nbsp;
+<a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/%E8%8E%AB%E6%B0%B4%E5%8D%83%E6%B5%81">联系</a> &nbsp;
+<a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/zhoug2020/rss">订阅</a><a id="blog_nav_rss_image" href="https://www.cnblogs.com/zhoug2020/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>&nbsp;
+<a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a>
+</div>
+		<DIV id="mystats"><div id="blog_stats">
+随笔-596&nbsp;
+评论-186&nbsp;
+文章-0&nbsp;
+<!--trackbacks-0-->
+</div></DIV>
+	
+</div>
+<div id="centercontent" >
+	
+<div id="post_detail">
+<div class = "post">
+	<h1 class = "postTitle"><a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/zhoug2020/p/5972439.html">C++命名空间 namespace的作用和使用解析</a></h1>
+	<div id="cnblogs_post_body" class="blogpost-body"><h1 id="一-为什么需要命名空间问题提出">一、 为什么需要命名空间（问题提出）</h1>
+<pre><code>命名空间是ANSIC++引入的可以由用户命名的作用域，用来处理程序中 常见的同名冲突。
+</code></pre>
+<p>在 <a class="replace_word" style="color: #df3434; font-weight: bold;" title="C语言知识库" href="http://lib.csdn.net/base/c" target="_blank">C语言</a>中定义了3个层次的作用域，即文件(编译单元)、函数和复合语句。C++又引入了类作用域，类是出现在文件内的。在不同的作用域中可以定义相同名字的变量，互不于扰，系统能够区别它们。</p>
+<pre><code>1、全局变量的作用域是整个程序，在同一作用域中不应有两个或多个同名的实体(enuty)，包括变量、函数和类等。
+</code></pre>
+<p>例：如果在文件中定义了两个类，在这两个类中可以有同名的函数。在引用时，为了区别，应该加上类名作为限定： <br />
+   class A     //声明A类 <br />
+    { public： <br />
+       void funl()；//声明A类中的funl函数 <br />
+    private： <br />
+        int i； }； <br />
+   void A::funl() //定义A类中的funl函数 <br />
+    {&hellip;&hellip;&hellip;&hellip;}</p>
+<pre><code>class B //声明B类
+{ public：
+    void funl()； //B类中也有funl函数
+    void fun2()； }；
+void B::funl() //定义B类中的funl函数
+{ &hellip;&hellip;&hellip;&hellip;}
+</code></pre>
+<p>这样不会发生混淆。 <br />
+    在 文件中可以定义全局变量(global variable)，它的作用域是整个程序。如果在文件A中定义了一个变量a        int a=3； <br />
+在文件B中可以再定义一个变量a       int a=5; <br />
+在分别对文件A和文件B进行编译时不会有问题。但是，如果一个程序包括文件A和文件B，那么在进行连接时，会报告出错，因为在同一个程序中有两个同名的变量，认为是对变量的重复定义。 <br />
+   可 以通过extern声明同一程序中的两个文件中的同名变量是同一个变量。如果在文件B中有以下声明： <br />
+      extem int a； <br />
+   表示文件B中的变量a是在其他文件中已定义的变量。由于有此声明，在程序编译和连接后，文件A的变量a的作用域扩展到了文件B。如果在文件B中不再对a赋值，则在文件B中用以下语句输出的是文件A中变量a的值： cout&lt;</p>
+<h1 id="二-什么是命名空间解-决方案"><a name="t1"></a>二、 什么是命名空间（解 决方案）</h1>
+<p>命名空间：实际上就是一个由程序设计者命名的内存区域，程序设计者可以根据需要指定一些有名字的空间域，把一些全局实体分别放在各个命名空间中，从而与其他全局实体分隔开来。 <br />
+如： namespace ns1 //指定命名中间nsl <br />
+      { int a； <br />
+      double b; } <br />
+   namespace 是定义命名空间所必须写的关键字，nsl 是用户自己指定的命名空间的名字(可 
+以用任意的合法标识符，这里用ns1是因为ns是namespace的缩写，含义请楚)，在花括号内是声明块，在其中声明的实体称为命名空间成员(namespace
+ 
+member)。现在命名空间成员包括变量a和b，注意a和b仍然是全局变量，仅仅是把它们隐藏在指定的命名空间中而已。如果在程序中要使用变量a和b，必须加上命名空间名和作用域分辨符&ldquo;::&rdquo;，如nsl::a，nsl::b。这种用法称为命名空间限定(qualified)，这些名字(如nsl::a)称为被限定名
+ (qualified name)。C++中命名空间的作用类似于<a class="replace_word" style="color: #df3434; font-weight: bold;" title="操作系统知识库" href="http://lib.csdn.net/base/operatingsystem" target="_blank">操作系统</a>中的目录和文件的关系，由于文件很多，不便管理，而且容易重名，于是人们设立若干子目录，把文件分别放到不同的子目录中，不同子目录中的文件可以同名。调用文件时应指出文件路径。 <br />
+   
+命名空间的作用：是建立一些互相分隔的作用域，把一些全局实体分隔开来。以免产生老点名叫李相国时，3个人都站起来应答，这就是名字冲突，因为他们无法辨别老师想叫的是哪一个李相国，同名者无法互相区分。为了避免同名混淆，学校把3个同名的学生分在3个班。这样，在小班点名叫李相国时，只会有一个人应答。也就是说，在该班的范围(即班作用域)内名字是惟一的。如果在全校集合时校长点名，需要在全校范围内找这个学生，就需要考虑作用域问题。如果校长叫李相国，全校学生中又会有3人一齐喊&ldquo;到&rdquo;，因为在同一作用域中存在3个同名学生。为了在全校范围内区分这3名学生，校长必须在名字前加上班号，如高三甲班的李相国，或高三乙班的李相国，即加上班名限定。这样就不致产生混淆。
+ <br />
+   
+可以根据需要设置许多个命名空间，每个命名空间名代表一个不同的命名空间域，不同的命名空间不能同名。这样，可以把不同的库中的实体放到不同的命名空间中，或者说，用不同的命名空间把不同的实体隐蔽起来。过去我们用的全局变量可以理解为全局命名空间，独立于所有有名的命名空间之外，它是不需要用
+ namespace声明的，实际上是由系统隐式声明的，存在于每个程序之中。 <br />
+在声明一个命名空间时，花括号内不仅可以包括变量，而且还可以包括以下类型： <br />
+&middot;变量(可以带有初始化)； <br />
+&middot;常量； <br />
+&middot;数(可以是定义或声明)； <br />
+&middot;结构体； <br />
+&middot;类； <br />
+&middot;模板； <br />
+&middot;命名空间(在一个命名空间中又定义一个命名空间，即嵌套的命名空间)。 <br />
+例如 <br />
+namespace nsl <br />
+   { const int RATE=0.08； //常量 <br />
+   doublepay；       //变量 <br />
+   doubletax()       //函数 <br />
+      {return a*RATE；} <br />
+   namespacens2       //嵌套的命名空间 <br />
+      {int age；} <br />
+   } <br />
+如果想输出命名空间nsl中成员的数据，可以采用下面的方法： <br />
+cout&lt;</p>
+<h1 id="三-使用命名空间解决名字冲突使用指南"><a name="t2"></a>三、 使用命名空间解决名字冲突（使用指南）</h1>
+<p>有了以上的基础后，就可以利用命名空间来解决名字冲突问题。现在，对例4程序进行修改，使之能正确运行。 <br />
+例5 利用命名空间来解决例4程序名字冲突问题。 <br />
+修改两个头文件，把在头文件中声明的类分别放在两个不同的命名空间中。 <br />
+//例8.5中的头文件1，文件名为header1.h <br />
+using namespace std; <br />
+ #include <br />
+ #include <br />
+namespace ns1 //声明命名空间ns1 <br />
+{ class Student //在命名空间nsl内声明Student类 <br />
+{ public: <br />
+Student(int n,string nam,int a) <br />
+{ num=n;name=nam;age=a;} <br />
+void get_data(); <br />
+private: <br />
+int num; <br />
+string name; <br />
+int age; }; <br />
+void Student::get_data() //定义成员函数 <br />
+   { cout&lt;</p>
+<h1 id="四-使用命名空间成员的方法"><a name="t3"></a>四、 使用命名空间成员的方法</h1>
+<p>从上面的介绍可以知道，在引用命名空间成员时，要用命名空间名和作用域分辨符对命名空间成员进行限定，以区别不同的命名空间中的同名标识符。即: <br />
+命名空间名：：命名空间成员名 <br />
+这种方法是有效的，能保证所引用的实体有惟一的名字。但是如果命名空间名字比较长，尤其在有命名空间嵌套的情况下，为引用一个实体，需要写很长的名字。在一个程序中可能要多次引用命名空间成员，就会感到很不方便。 <br />
+1 、使用命名空间别名 <br />
+可以为命名空间起一个别名(namespace alias)，用来代替较长的命名空间名。如 <br />
+namespace Television //声明命名空间，名为Television <br />
+{ &hellip; } <br />
+可以用一个较短而易记的别名代替它。如： <br />
+namespace TV=Television； //别名TV与原名Television等价 <br />
+也可以说，别名TV指向原名Television，在原来出现Television的位置都可以无条件地用TV来代替。 <br />
+2、使用using命名空间成员名 <br />
+using后面的命名空间成员名必须是由命名空间限定的名字。例如： <br />
+using nsl::Student； <br />
+以上语句声明：在本作用域(using语句所在的作用域)中会用到命名空间ns1中的成员Student，在本作用域中如果使用该命名空间成员时，不必再用命名空间限定。例如在用上面的using声明后，在其后程序中出现的Student就是隐含地指nsl::Student。
+ <br />
+using声明的有效范围是从using语句开始到using所在的作用域结束。如果在以上的using语句之后有以下语句： <br />
+Student studl(101,&rdquo;Wang&rdquo;,18)； //此处的Student相当于ns1::Student <br />
+上面的语句相当于 <br />
+nsl::Student studl(101，&rdquo;Wang&rdquo;，18)； <br />
+又如 <br />
+using nsl::fun； //声明其后出现的fun是属于命名空间nsl中的fun <br />
+cout&lt;</p>
+<h1 id="五-无名的命名空间"><a name="t4"></a>五、 无名的命名空间</h1>
+<p>以上介绍的是有名字的命名空间，C++还允许使用没有名字的命名空间，如在文件A中声明了以下的无名命名空间： <br />
+namespace //命名空间没有名字 <br />
+{ void fun( ) //定 义命名空间成员 <br />
+{ cout&lt;&lt;&rdquo;OK．&rdquo;&lt;</p>
+<h1 id="六标准命名空间std"><a name="t5"></a>六、标准命名空间std</h1>
+<p>为了解决C++标准库中的标识符与程序中的全局标识符之间以及不同库中的标识符之间的同名冲突，应该将不同库的标识符在不同的命名空间中定义(或声明)。标准C++库的所有的标识符都是在一个名为std的命名空间中定义的，或者说标准头文件(如iostream)中函数、类、对象和类模板是在命名空间
+ std中定义的。std是standard(标准)的缩写，表示这是存放标准库的有关内容的命名空间，含义请楚，不必死记。 <br />
+这样，在程序中用到C++标准库时，需要使用std作为限定。如 <br />
+std::cout&lt;&lt;&rdquo;OK．&rdquo;&lt;</p>
+<h1 id="七-使用早期的函数库"><a name="t6"></a>七、 使用早期的函数库</h1>
+<p>C语言程序中各种功能基本上都是由函数来实现的，在C语言的发展过程中建立了功能丰富的函数库，C++从C语言继承了这份宝贵的财富。在C++程序中可以使用C语言的函数库。 <br />
+如果要用函数库中的函数，就必须在程序文件中包含有关的头文件，在不同的头文件中，包含了不同的函数的声明。 <br />
+在C++中使用这些 头文件有两种方法。 <br />
+1、用C语言的传统方法 <br />
+头文件名包括后缀．h，如stdio.h，math.h等。由于C语言没有命名空间，头文件并不存放在命名空间中，因此在C++程序文件中如果用到带后缀．h的头文件时，不必用命名空间。只需在文件中包含所用的头文件即可。如 <br />
+ #include <br />
+2、用C++的新方法 <br />
+  C++标准要求系统提供的头文件不包括后缀．h，例如iostream、string。为了表示与C 
+语言的头文件有联系又有区别，C++所用的头文件名是在C语言的相应的头文件名(但不包括后缀．h)之前加一字母c。例如，C语言中有关输入与输出的头文件名为stdio．h在C++中相应的头文件名为cstdio。C语言中的头文件math.h，在C++中相应的头文什名为cmath。C语言中的头文件
+ 
+string．h在C++中相应的头文件名为cstring。注意在C++中，头文件cstnng和头文件strmg不是同一个文件。前者提供C语言中对字符串处理的有关函数(如strcmp，ctrcpy)的声明，后者提供C++中对字符串处理的新功能。
+ <br />
+此外，由于这些函数都是在命名空间std中声明的，因此在程序中要对命名空间std作声明。如： <br />
+ #include <br />
+ #include <br />
+using namespace std； <br />
+目前所用的大多数C++编译系统既保留了c的用法，又提供丁C++的新方法。下面两种用法等价，可以任选。 <br />
+C传 统方法 C++新方法 <br />
+ #include #include <br />
+ #include #include <br />
+ #include #include <br />
+using namespace std； <br />
+可以使用传统的c方法，但应当提倡使用C++的新方法。</p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+	<div class = "postDesc">posted on <span id="post-date">2016-10-18 10:47</span> <a href='https://www.cnblogs.com/zhoug2020/'>莫水千流</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=5972439" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(5972439);return false;">收藏</a></div>
+</div>
+<script type="text/javascript">var allowComments=true,cb_blogId=106563,cb_entryId=5972439,cb_blogApp=currentBlogApp,cb_blogUserGuid='2dbbe17c-6556-de11-9510-001cf0cd104b',cb_entryCreatedDate='2016/10/18 10:47:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<div id='cnblogs_c1' class='c_ad_block'></div>
+<div id='under_post_news'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+    googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'>
+    <script>
+    if (new Date() >= new Date(2018, 9, 13)) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    </div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+</div>
+<div id="leftcontent">
+	
+		<DIV id="leftcontentcontainer">
+			
+<!--done-->
+<div class="newsItem">
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script><br>
+			<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script></DIV>
+	
+</div>
+
+<!--done-->
+<div class="footer">
+	Powered by: <a href="http://www.cnblogs.com">博客园</a>	模板提供：<a href="http://blog.hjenglish.com">沪江博客</a>
+	Copyright &copy;2018 莫水千流
+</div>
+
+
+
+</body>
+</html>

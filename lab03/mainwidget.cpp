@@ -42,13 +42,13 @@ mainWidget::~mainWidget()
  */
 void mainWidget::initComboMonth()
 {
+    QDateTime dt;
+    QDate date;
+    dt.setDate(date.currentDate());
+    QString currentDate = dt.toString("yyyy.MM");
     QStringList month;
     for(int i=10;i>0;i--){
-        // 此处为固定时间和日期
-        // 请使用QDate/QDateTime将其修正，
-        // 用户运行前一个月开始连续10个月的"年-月"
-        // (如2018-02、2018-01、2017-12...，假设当前日期为2018年3月12日)
-        month<<QString("2018-%1").arg(i,2,10,QChar('0'));
+        month<<dt.toString("yyyy-%1").arg(i,2,10,QChar('0'));
     }
     ui->comboMonth->clear();
     ui->comboMonth->addItems(month);
@@ -139,9 +139,17 @@ void mainWidget::addLineSeries(QChart *chart, const QString &seriesName, const Q
         mAxisX->setRange(QDateTime::currentDateTime().addMonths(-1),QDateTime::currentDateTime());
 
         QValueAxis *mAxisY = new QValueAxis;
-        mAxisY->setRange(-5,40);
-        mAxisY->setLabelFormat("%g");
-        mAxisY->setTitleText("摄氏度(°C)");
+        if(worker->type==Temperature)
+        {
+             mAxisY->setRange(-10,40);
+             mAxisY->setLabelFormat("%g");
+             mAxisY->setTitleText("摄氏度(°C)");
+        }
+        if(worker->type==AQI)
+        {
+            mAxisY->setRange(0,200);
+            mAxisY->setTitleText("污染物指数");
+        }
 
         chart->setAxisX(mAxisX,series);
         chart->setAxisY(mAxisY,series);

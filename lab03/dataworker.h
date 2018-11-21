@@ -33,6 +33,7 @@ public:
     void setRequestDate(QString newDate);
     QString requestDate();
     void doRequest();
+    enum queryType type;
 
 
 protected:
@@ -49,7 +50,7 @@ protected slots:
 private:
     QNetworkAccessManager *manager;         //!< 网络访问管理类对象
     QString _requestDate;                   //!< 请求年月
-    enum queryType type;                    //!< 查询类型（AQI/温度）
+//    enum queryType type;                    //!< 查询类型（AQI/温度）
     QString city;                           //!< 城市
 
     QList<QDateTime> dataDate;              //!< 日期

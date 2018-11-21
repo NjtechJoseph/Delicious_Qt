@@ -93,8 +93,7 @@ QString dataWorker::requestDate()
 void dataWorker::doRequest()
 {
     // 导入数据，首先检查是否已经存在数据文件
-    QString fName = QString("%1/%2.txt").arg(dataPath,_requestDate);
-//    qDebug()<<fName;
+    QString fName =QString("%1/%2-%3-%4.txt").arg(dataPath,_requestDate,city,getQueryTypeInString());
     QStringList dataList;
     QFile f(fName);
     if(f.open(QIODevice::ReadOnly|QIODevice::Text)){  // 成功打开数据文件，则由文件中读取
@@ -108,9 +107,9 @@ void dataWorker::doRequest()
         // 如果无数据文件，则从网络获取
         qDebug().noquote()<<QString("数据由网络获取...");
         httpGet(requestUrl());
-        qDebug().noquote()<<requestUrl();
     }
 }
+
 
 /**
  * @brief 构造实际请求链接
@@ -165,7 +164,7 @@ void dataWorker::parseHTML(const QString sourceText)
     while (!reader.atEnd()) {
         reader.readNext();
         if (reader.isStartElement()) {
-            //qDebug()<<reader.name();
+            qDebug()<<reader.name();
             if (type==Temperature){
                 if (reader.name() == "ul"){         // 查找Html标签：ul
                     strData<<reader.readElementText(QXmlStreamReader::IncludeChildElements).trimmed();
@@ -243,7 +242,6 @@ void dataWorker::exportDataToFile(const QString dataText)
         qDebug()<<dir.mkdir(dataPath);
 
     QString fName = QString("%1/%2-%3-%4.txt").arg(dataPath,_requestDate,city,getQueryTypeInString());
-
     QFile f(fName);
     if(f.open(QIODevice::WriteOnly|QIODevice::Text)){
         QTextStream stream (&f);
@@ -263,6 +261,7 @@ void dataWorker::httpGet(QString url)
 {
     QNetworkRequest request;
     request.setUrl(QUrl(url));
+    request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
     manager->get(request);
 }
 
@@ -306,11 +305,26 @@ void dataWorker::httpsFinished(QNetworkReply *reply)
 
     // 先做一个简单处理，将包含内容的完整<div>..</div>标签内的文本内容，
     // 并滤除其中的空白字符"\r\n\t"
-    int begin = html.indexOf("<div class=\"tqtongji2\">");
-    int end = html.indexOf("<div class=\"lishicity03\">");
-    html = html.mid(begin,end-begin);
-    html = html.left(html.indexOf("<div style=\"clear:both\">"));
-    html = html.simplified().trimmed();
+    if(type==Temperature)
+    {
+           int begin = html.indexOf("<div class=\"tqtongji2\">");
+           int end = html.indexOf("<div class=\"lishicity03\">");
+           html = html.mid(begin,end-begin);
+           html = html.left(html.indexOf("<div style=\"clear:both\">"));
+           html = html.simplified().trimmed();
+
+       qDebug()<<"website"<<html;
+      }
+    if(type==AQI)
+    {
+
+     int begin=html.indexOf("<div class=\"api_month_list\">");
+     int end=html.indexOf("<div id=\"chartdiv\" align=\"center\">");
+        html=html.mid(begin,end-begin);
+        html=html.left(html.indexOf("<p >"));
+        html = html.simplified().trimmed();
+        qDebug()<<"website"<<html;
+    }
 
     if (! html.isEmpty()){
         qDebug()<<"开始解析html";

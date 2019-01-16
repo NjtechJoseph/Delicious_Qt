@@ -34,6 +34,12 @@
         <layout class="QGridLayout" name="gridLayout_2">
          <item row="0" column="0" colspan="2">
           <widget class="QRadioButton" name="NameButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>姓名</string>
            </property>
@@ -53,7 +59,14 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="1" colspan="2">
+         <item row="0" column="3">
+          <widget class="QRadioButton" name="allButton">
+           <property name="text">
+            <string>全部</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1" colspan="3">
           <widget class="QLineEdit" name="InputEdit"/>
          </item>
         </layout>
@@ -104,26 +117,6 @@
          <string>详细信息</string>
         </property>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>学号：</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QLineEdit" name="NumEdit"/>
-         </item>
-         <item row="1" column="0" colspan="2">
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>姓名：</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="QLineEdit" name="nameEdit"/>
-         </item>
          <item row="2" column="0">
           <widget class="QLabel" name="label_4">
            <property name="text">
@@ -138,11 +131,41 @@
            </property>
           </widget>
          </item>
+         <item row="1" column="2">
+          <widget class="QLineEdit" name="nameEdit"/>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>姓名：</string>
+           </property>
+          </widget>
+         </item>
          <item row="3" column="2">
           <widget class="QLineEdit" name="gradeEdit"/>
          </item>
          <item row="2" column="2">
           <widget class="QLineEdit" name="majorEdit"/>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLineEdit" name="numEdit"/>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>学号：</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_7">
+           <property name="text">
+            <string>绩点：</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="2">
+          <widget class="QLineEdit" name="GPA"/>
          </item>
         </layout>
        </widget>
@@ -200,11 +223,30 @@
    </property>
    <widget class="QMenu" name="menuwenjian">
     <property name="title">
-     <string>wenjian</string>
+     <string>文件</string>
     </property>
+    <addaction name="add_action"/>
+    <addaction name="input_action"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
    </widget>
    <addaction name="menuwenjian"/>
   </widget>
+  <action name="add_action">
+   <property name="text">
+    <string>增加记录</string>
+   </property>
+  </action>
+  <action name="input_action">
+   <property name="text">
+    <string>批量导入</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

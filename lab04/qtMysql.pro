@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,13 +26,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        scorewindow.cpp
+        scorewindow.cpp \
+    adddialog.cpp
 
 HEADERS += \
-        scorewindow.h
+        scorewindow.h \
+    adddialog.h
 
 FORMS += \
-        scorewindow.ui
+        scorewindow.ui \
+    adddialog.ui
 
 RESOURCES += \
     resources.qrc
